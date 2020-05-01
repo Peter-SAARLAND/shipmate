@@ -1,3 +1,43 @@
-DOCKER_TLS_CERTDIR: ""
+include:
+  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/version.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/release.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/docker/build.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/dcker/release.gitlab-ci.yml'
+
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /-wip$/
+      when: never
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
+
+stages:
+  - version
+  - build
+  - test
+  - release
+  - deploy
+    
+cache:
+  key: "$CI_JOB_NAME"
+  
+variables:
+  DOCKER_TLS_CERTDIR: ""
   DOCKER_BUILDKIT: 1
   IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+
+# include:
+#   - template: Container-Scanning.gitlab-ci.yml
+
+# include:
+#   - template: License-Scanning.gitlab-ci.yml
+  
+# include:
+#   - template: Dependency-Scanning.gitlab-ci.yml
+
+# include:
+#   - template: SAST.gitlab-ci.yml
