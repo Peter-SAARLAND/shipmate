@@ -1,38 +1,31 @@
 ---
-- name: "Shipmate: {{ shipmate_provider }}"
-  hosts: localhost
-  connection: local
-  gather_facts: false
+- name: Ensure the ANSIBLE_GALAXY_TOKEN environment variable is set.
+  fail:
+    msg: ansible_galaxy_token is not set.
+  when: ansible_galaxy_token is undefined
 
-  pre_tasks:
-    - name: Ensure the ANSIBLE_GALAXY_TOKEN environment variable is set.
-      fail:
-        msg: ansible_galaxy_token is not set.
-      when: ansible_galaxy_token is undefined
+- name: Ensure the ~/.ansible directory exists.
+  file:
+    path: ~/.ansible
+    state: directory
 
-    - name: Ensure the ~/.ansible directory exists.
-      file:
-        path: ~/.ansible
-        state: directory
+- name: Set Galaxy token
+  copy:
+    content: |
+      token: {{ ansible_galaxy_token }}
+    dest: ~/.ansible/galaxy_token
 
-    - name: Set Galaxy token
-      copy:
-        content: |
-          token: {{ ansible_galaxy_token }}
-        dest: ~/.ansible/galaxy_token
+- name: Template galaxy.yml
+  template:
+    src: templates/galaxy.yml.j2
+    dest: ../galaxy.yml
 
-  tasks:
-    - name: Template galaxy.yml
-      template:
-        src: templates/galaxy.yml.j2
-        dest: ../galaxy.yml
+- name: Build collection
+  command: >
+    ansible-galaxy collection build
+    chdir=../
 
-    - name: Build collection
-      command: >
-        ansible-galaxy collection build
-        chdir=../
-
-    - name: Publish collection
-      command: >
-        ansible-galaxy collection publish ./{{ ansible_galaxy_namespace }}-{{ shipmate_name }}-{{ shipmate_tag }}.tar.gz
-        chdir=../
+- name: Publish collection
+  command: >
+    ansible-galaxy collection publish ./{{ ansible_galaxy_namespace }}-{{ shipmate_name }}-{{ shipmate_tag }}.tar.gz
+    chdir=../

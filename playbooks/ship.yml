@@ -1,4 +1,11 @@
 - name: "Shipmate"
+  hosts: localhost
+  connection: local
+  gather_facts: false
   vars:
+    shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('ansible-galaxy', true) | list }}"
     shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
-  import_playbook: "{{ shipmate_provider }}.yml"
+  tasks:
+    - name: "Load Providers"
+      include: "{{ item }}.yml"
+      with_items: "{{ shipmate_providers }}"
