@@ -1,0 +1,9 @@
+build docker:
+  stage: build
+  image: docker:19.03.6
+  services:
+    - docker:19.03.6-dind
+  script:
+    - echo "$CI_JOB_TOKEN" | docker login $CI_REGISTRY --username=gitlab-ci-token --password-stdin
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t $IMAGE_TAG -f Dockerfile .
+    - docker push $IMAGE_TAG
