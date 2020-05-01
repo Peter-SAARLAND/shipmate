@@ -2,6 +2,7 @@ FROM registry.gitlab.com/peter.saarland/ansible-boilerplate
 
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV SHIPMATE_SHIPFILE=Shipfile
+ENV ANSIBLE_INVENTORY=/inventory
 
 RUN mkdir -p /shipmate $SHIPMATE_CARGO_DIR
 
@@ -13,6 +14,7 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 WORKDIR /shipmate
 
 COPY . .
+COPY ./inventory /inventory
 
 WORKDIR $SHIPMATE_CARGO_DIR
 

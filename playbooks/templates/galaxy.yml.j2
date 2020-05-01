@@ -2,7 +2,7 @@
 namespace: "{{ ansible_galaxy_namespace }}"
 name: "{{ shipmate_name }}"
 description: "{{ shipmate_description }}"
-version: "{{ shipmate_tag }}"
+version: "{{ shipmate_cargo_version }}"
 readme: README.md
 authors:
   - {{ shipmate_author }} ({{ shipmate_author_url }})
@@ -10,7 +10,7 @@ dependencies: { }
 license:
   - MIT
 tags:
-{% for tag in shipmate_tags %}
+{% for tag in shipmate_tags.split(',') %}
   - {{ tag }}
 {% endfor %}
 repository: "{{ shipmate_repository }}"

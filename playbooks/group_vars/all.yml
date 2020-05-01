@@ -20,6 +20,10 @@ shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERS
 shipmate_shipfile: "{{ lookup('env','SHIPMATE_SHIPFILE') | default('Shipfile', true) }}"
 shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default('', true) }}"
 
+
+# Provider: Git
+git_default_remote:
+
 # Provider: GitLab
 gitlab_token: "{{ lookup('env','GITLAB_TOKEN') | default('', true) }}"
 gl_token: "{{ lookup('env','GL_TOKEN') | default('', true) }}"
