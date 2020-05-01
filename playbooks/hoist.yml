@@ -1,12 +1,12 @@
 - name: Get Version
   set_fact:
-    v: "{{ lookup('file', shipmate_version_file, errors='ignore') }}"
+    shipmate_cargo_version: "{{ lookup('file', shipmate_version_file, errors='ignore') }}"
   failed_when: false
   ignore_errors: True
 
 - name: Debug Version
   debug:
-    msg: "{{ v }}"
+    msg: "Cargo Version: {{ shipmate_cargo_version }}"
 
 - name: Generate Semantic Version
   command: npx semantic-release --generate-notes false --dry-run

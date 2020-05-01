@@ -27,5 +27,5 @@
 
 - name: Publish collection
   command: >
-    ansible-galaxy collection publish ./{{ ansible_galaxy_namespace }}-{{ shipmate_name }}-{{ shipmate_tag }}.tar.gz
+    ansible-galaxy collection publish ./{{ ansible_galaxy_namespace }}-{{ shipmate_name }}-{{ shipmate_cargo_version }}.tar.gz
     chdir="{{ shipmate_cargo_dir }}"
