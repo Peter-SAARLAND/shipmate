@@ -13,6 +13,10 @@ shipmate_docs: "{{ lookup('env','SHIPMATE_DOCS') | default('', true) }}"
 shipmate_website: "{{ lookup('env','SHIPMATE_WEBSITE') | default('', true) }}"
 shipmate_issues: "{{ lookup('env','SHIPMATE_ISSUES') | default('', true) }}"
 
+# Provider: GitLab
+GITLAB_TOKEN: "{{ lookup('env','GITLAB_TOKEN') | default('', true) }}"
+GL_TOKEN: "{{ lookup('env','GL_TOKEN') | default('', true) }}"
+
 # Provider: ansible-galaxy
 ansible_galaxy_token: "{{ lookup('env','ANSIBLE_GALAXY_TOKEN') | default('', true) }}"
 ansible_galaxy_namespace: "{{ lookup('env','ANSIBLE_GALAXY_NAMESPACE') | default('derfabianpeter', true) }}"
