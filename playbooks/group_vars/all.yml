@@ -1,0 +1,16 @@
+# Shipmate
+shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
+shipmate_name: "{{ lookup('env','SHIPMATE_NAME') | default('', true) }}"
+shipmate_description: "{{ lookup('env','SHIPMATE_DESCRIPTION') | default('', true) }}"
+shipmate_tag: "{{ lookup('env','SHIPMATE_TAG') | default('', true) }}"
+shipmate_author: "{{ lookup('env','SHIPMATE_AUTHOR') | default('', true) }}"
+shipmate_author_url: "{{ lookup('env','SHIPMATE_AUTHOR_URL') | default('', true) }}"
+shipmate_tags: "{{ lookup('env','SHIPMATE_TAGS') | default([ansible], true) }}"
+shipmate_repository: "{{ lookup('env','SHIPMATE_REPOSITORY') | default('', true) }}"
+shipmate_docs: "{{ lookup('env','SHIPMATE_DOCS') | default('', true) }}"
+shipmate_website: "{{ lookup('env','SHIPMATE_WEBSITE') | default('', true) }}"
+shipmate_issues: "{{ lookup('env','SHIPMATE_ISSUES') | default('', true) }}"
+
+# Provider: ansible-galaxy
+ansible_galaxy_token: "{{ lookup('env','ANSIBLE_GALAXY_TOKEN') | default('', true) }}"
+ansible_galaxy_namespace: "{{ lookup('env','ANSIBLE_GALAXY_NAMESPACE') | default('derfabianpeter', true) }}"

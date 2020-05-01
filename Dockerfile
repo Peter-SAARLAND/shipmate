@@ -1,1 +1,1 @@
-FROM scratch
+FROM registry.gitlab.com/peter.saarland/ansible-boilerplate

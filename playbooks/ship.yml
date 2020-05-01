@@ -1,0 +1,4 @@
+- name: "Shipmate"
+  vars:
+    shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
+  import_playbook: "{{ shipmate_provider }}.yml"

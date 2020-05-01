@@ -1,0 +1,22 @@
+---
+namespace: "{{ ansible_galaxy_namespace }}"
+name: "{{ shipmate_name }}"
+description: "{{ shipmate_description }}"
+version: "{{ shipmate_tag }}"
+readme: README.md
+authors:
+  - {{ shipmate_author }} ({{ shipmate_author_url }})
+dependencies: { }
+license:
+  - MIT
+tags:
+{% for tag in shipmate_tags %}
+  - {{ tag }}
+{% endfor %}
+repository: "{{ shipmate_repository }}"
+documentation: "{{ shipmate_docs }}"
+homepage: "{{ shipmate_website }}"
+issues: "{{ shipmate_issues }}"
+build_ignore:
+  - scripts
+  - tests
