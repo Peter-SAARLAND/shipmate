@@ -1,0 +1,24 @@
+- name: "Ship!"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('ansible-galaxy', true) | list }}"
+    shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
+  tasks:
+    - name: "Update Environment"
+      include: update_environment.yml
+      tags:
+        - hoist
+        - sail
+    - name: "Hoist!"
+      include: hoist.yml
+      tags:
+        - hoist
+        - sail
+    - name: "Sail!"
+      include: "provider-{{ item }}.yml"
+      with_items: "{{ shipmate_providers }}"
+      tags:
+        - sail
+    

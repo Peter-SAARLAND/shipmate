@@ -1,4 +1,5 @@
 # Shipmate
+shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default('/cargo', true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
 shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default(['ansible-galaxy'], true) }}"
 shipmate_name: "{{ lookup('env','SHIPMATE_NAME') | default('', true) }}"

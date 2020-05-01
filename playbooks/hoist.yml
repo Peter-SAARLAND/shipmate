@@ -1,0 +1,16 @@
+- name: Get Version
+  set_fact:
+    v: "{{ lookup('file', shipmate_version_file, errors='ignore') }}"
+  failed_when: false
+  ignore_errors: True
+
+- name: Debug Version
+  debug:
+    msg: "{{ v }}"
+
+- name: Generate Semantic Version
+  command: npx semantic-release --generate-notes false --dry-run
+    chdir="../"
+    creates="{{ shipmate_version_file }}"
+  when: "v == ''"
+  

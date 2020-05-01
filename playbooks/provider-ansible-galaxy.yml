@@ -1,0 +1,31 @@
+---
+- name: Ensure the ANSIBLE_GALAXY_TOKEN environment variable is set.
+  fail:
+    msg: ansible_galaxy_token is not set.
+  when: ansible_galaxy_token is undefined
+
+- name: Ensure the ~/.ansible directory exists.
+  file:
+    path: ~/.ansible
+    state: directory
+
+- name: Set Galaxy token
+  copy:
+    content: |
+      token: {{ ansible_galaxy_token }}
+    dest: ~/.ansible/galaxy_token
+
+- name: Template galaxy.yml
+  template:
+    src: templates/galaxy.yml.j2
+    dest: "{{ shipmate_cargo_dir }}/galaxy.yml"
+
+- name: Build collection
+  command: >
+    ansible-galaxy collection build
+    chdir="{{ shipmate_cargo_dir }}"
+
+- name: Publish collection
+  command: >
+    ansible-galaxy collection publish ./{{ ansible_galaxy_namespace }}-{{ shipmate_name }}-{{ shipmate_tag }}.tar.gz
+    chdir="{{ shipmate_cargo_dir }}"
