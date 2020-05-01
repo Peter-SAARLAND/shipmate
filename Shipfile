@@ -1,0 +1,6 @@
+SHIPMATE_PROVIDERS=ansible-galaxy
+ANSIBLE_GALAXY_NAMESPACE=derfabianpeter
+SHIPMATE_NAME=$CI_PROJECT_NAME
+SHIPMATE_DESCRIPTION="Node-Exporter for Zero"
+SHIPMATE_TAGS="devops,ansible,zero"
+SHIPMATE_WEBSITE=https://www.peter.saarland
