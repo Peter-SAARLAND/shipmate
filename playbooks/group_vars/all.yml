@@ -12,6 +12,7 @@ shipmate_repository: "{{ lookup('env','SHIPMATE_REPOSITORY') | default('', true)
 shipmate_docs: "{{ lookup('env','SHIPMATE_DOCS') | default('', true) }}"
 shipmate_website: "{{ lookup('env','SHIPMATE_WEBSITE') | default('', true) }}"
 shipmate_issues: "{{ lookup('env','SHIPMATE_ISSUES') | default('', true) }}"
+shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERSION.txt', true) }}"
 
 # Provider: GitLab
 GITLAB_TOKEN: "{{ lookup('env','GITLAB_TOKEN') | default('', true) }}"
