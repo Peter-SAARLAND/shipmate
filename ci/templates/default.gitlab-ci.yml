@@ -2,7 +2,7 @@ include:
   - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/version.gitlab-ci.yml'
   - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/release.gitlab-ci.yml'
   - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/docker/build.gitlab-ci.yml'
-  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/dcker/release.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/docker/release.gitlab-ci.yml'
 
 
 workflow:
