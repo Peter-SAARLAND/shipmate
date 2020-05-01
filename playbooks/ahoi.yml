@@ -6,11 +6,6 @@
     shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('ansible-galaxy', true) | list }}"
     shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
   tasks:
-    - name: "Update Environment"
-      include: update_environment.yml
-      tags:
-        - hoist
-        - sail
     - name: "Hoist!"
       include: hoist.yml
       tags:

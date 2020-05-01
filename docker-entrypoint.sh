@@ -1,10 +1,12 @@
 #! /bin/bash
 set -e
 
-if [ -f /ship/Shipfile ];
+SHIPFILE=$SHIPMATE_CARGO_DIR/$SHIPMATE_SHIPFILE
+
+if [ -f $SHIPFILE ];
 then
   set -o allexport
-  source Shipfile
+  source $SHIPFILE
   set +o allexport
 fi
 exec "$@"

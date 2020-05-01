@@ -1,6 +1,9 @@
 FROM registry.gitlab.com/peter.saarland/ansible-boilerplate
 
-RUN mkdir -p /shipmate /cargo
+ENV SHIPMATE_CARGO_DIR=/cargo
+ENV SHIPMATE_SHIPFILE=Shipfile
+
+RUN mkdir -p /shipmate $SHIPMATE_CARGO_DIR
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && apt-get update \
@@ -11,6 +14,6 @@ WORKDIR /shipmate
 
 COPY . .
 
-WORKDIR /cargo
+WORKDIR $SHIPMATE_CARGO_DIR
 
 ENTRYPOINT ["/shipmate/docker-entrypoint.sh"]
