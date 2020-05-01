@@ -1,4 +1,4 @@
-- name: "Ship!"
+- name: "Ahoi!"
   hosts: localhost
   connection: local
   gather_facts: false
@@ -6,6 +6,9 @@
     shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('ansible-galaxy', true) | list }}"
     shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
   tasks:
+    - name: "Where am I?"
+      set_fact:
+        shipmate_cargo_dir: "{{ lookup('env','PWD') }}"
     - name: "Hoist!"
       include: hoist.yml
       tags:
