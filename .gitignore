@@ -1,2 +1,4 @@
 galaxy.yml
 *.gz
+node_modules
+package-lock.json

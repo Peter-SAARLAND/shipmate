@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-if [ -f Shipfile ];
+if [ -f /ship/Shipfile ];
 then
   set -o allexport
   source Shipfile
