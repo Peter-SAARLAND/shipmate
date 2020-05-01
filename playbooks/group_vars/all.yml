@@ -1,3 +1,6 @@
+# Ansible
+ansible_python_interpreter: "/usr/bin/python3"
+
 # Shipmate
 shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default('/cargo', true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
@@ -16,8 +19,8 @@ shipmate_issues: "{{ lookup('env','SHIPMATE_ISSUES') | default('', true) }}"
 shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERSION.txt', true) }}"
 
 # Provider: GitLab
-GITLAB_TOKEN: "{{ lookup('env','GITLAB_TOKEN') | default('', true) }}"
-GL_TOKEN: "{{ lookup('env','GL_TOKEN') | default('', true) }}"
+gitlab_token: "{{ lookup('env','GITLAB_TOKEN') | default('', true) }}"
+gl_token: "{{ lookup('env','GL_TOKEN') | default('', true) }}"
 
 # Provider: ansible-galaxy
 ansible_galaxy_token: "{{ lookup('env','ANSIBLE_GALAXY_TOKEN') | default('', true) }}"
