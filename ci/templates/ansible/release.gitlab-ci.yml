@@ -2,7 +2,7 @@ release galaxy:
   stage: release
   image: registry.gitlab.com/peter.saarland/zero:latest
   script:
-    - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+    #- ansible-playbook tests/test.yml -i tests/inventory --syntax-check
     - curl -fsSL https://galaxy.ansible.com/api/v1/notifications/?branch=${CI_COMMIT_REF_NAME}
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master"'
