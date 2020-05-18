@@ -1,3 +1,3 @@
 - name: "Set Cargo Path"
   set_fact:
-    shipmate_cargo_dir: "{{ lookup('env','PWD') }}"
+    shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default('/cargo', true) }}"

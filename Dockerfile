@@ -3,8 +3,9 @@ FROM registry.gitlab.com/peter.saarland/ansible-boilerplate
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV SHIPMATE_SHIPFILE=Shipfile
 ENV ANSIBLE_INVENTORY=/inventory
+ENV ENVIRONMENT_DIR=/root/.if0/.environments/zero
 
-RUN mkdir -p /shipmate $SHIPMATE_CARGO_DIR
+RUN mkdir -p ${ENVIRONMENT_DIR} /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && apt-get update \
@@ -16,6 +17,8 @@ WORKDIR /shipmate
 COPY . .
 COPY ./inventory /inventory
 
-WORKDIR $SHIPMATE_CARGO_DIR
+RUN echo 'export PS1="[\$IF0_ENVIRONMENT] \W # "' >> /root/.bashrc
 
 ENTRYPOINT ["/shipmate/docker-entrypoint.sh"]
+
+CMD ["/bin/bash"]

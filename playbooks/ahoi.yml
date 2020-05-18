@@ -2,16 +2,15 @@
   hosts: shipmate
   connection: local
   gather_facts: false
-  vars:
-    shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('ansible-galaxy', true) | list }}"
-    shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
-    shipmate_cargo_dir: "{{ lookup('env','PWD') }}"
   tasks:
     - name: "Check!"
       include: build-environment.yml
       tags:
         - hoist
         - sail
+    - name: "Validate!"
+      debug:
+        msg: "shipmate_providers: {{ shipmate_providers }}"
     - name: "Hoist!"
       include: hoist.yml
       tags:
@@ -19,7 +18,7 @@
         - sail
     - name: "Sail!"
       include: "provider-{{ item }}.yml"
-      with_items: "{{ shipmate_providers }}"
+      with_items: "{{ shipmate_providers }}"
       tags:
         - sail
     

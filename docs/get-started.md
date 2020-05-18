@@ -42,5 +42,5 @@ include:
 ```
 
 ```bash
-docker run -ti -v "${HOME}/.ssh:/root/.ssh" -v "${PWD}:/cargo" shipmate ansible-playbook -i "localhost," /shipmate/playbooks/ahoi.yml
+docker run -ti -v "${HOME}/.ssh:/root/.ssh" -v "${PWD}:/cargo" shipmate ansible-playbook /shipmate/playbooks/ahoi.yml
 ```
