@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/peter.saarland/ansible-boilerplate
+FROM registry.gitlab.com/peter.saarland/ansible-boilerplate:latest
 
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV SHIPMATE_SHIPFILE=Shipfile
