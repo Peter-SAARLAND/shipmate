@@ -2,7 +2,6 @@ FROM registry.gitlab.com/peter.saarland/ansible-boilerplate:latest
 
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV SHIPMATE_SHIPFILE=Shipfile
-ENV ANSIBLE_INVENTORY=/inventory
 ENV ENVIRONMENT_DIR=/root/.if0/.environments/zero
 
 RUN mkdir -p ${ENVIRONMENT_DIR} /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
@@ -15,7 +14,6 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 WORKDIR /shipmate
 
 COPY . .
-COPY ./inventory /inventory
 
 RUN echo 'export PS1="[\$IF0_ENVIRONMENT] \W # "' >> /root/.bashrc
 
