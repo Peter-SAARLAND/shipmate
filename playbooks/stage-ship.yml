@@ -1,13 +1,11 @@
----
 - name: Ensure CHANGELOG.md exists
   file:
-    path: {{ shipmate_cargo_dir }}/CHANGELOG.md
-    state: file
+    path: "{{ shipmate_cargo_dir }}/CHANGELOG.md"
+    state: touch
 
 - name: Publish Release
   command: npx semantic-release
     chdir="{{ shipmate_cargo_dir }}"
-    creates="{{ shipmate_cargo_dir }}/{{ shipmate_version_file }}"
   register: semantic_release
 
 - name: Look what I found ...

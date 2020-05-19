@@ -1,0 +1,63 @@
+- name: Looking for VERSION.txt ...
+  set_fact:
+    shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+  failed_when: false
+  ignore_errors: True
+
+- name: Generating VERSION.txt
+  block:
+    - name: Generating VERSION.txt
+      copy: 
+        content="tag-{{ shipmate_branch }}-{{ shipmate_commit_id }}" 
+        dest={{ shipmate_cargo_dir }}/{{ shipmate_version_file }}
+  when: >
+    shipmate_merge_request is defined or shipmate_merge_request != "" and
+    shipmate_cargo_version is undefined or shipmate_cargo_version == ''
+
+- name: Generating VERSION.txt
+  block:
+    - name: Templating .releaserc.yml
+      template:
+        src: templates/.releaserc.yml.j2
+        dest: "{{ shipmate_cargo_dir }}/.releaserc.yml"
+    
+    - name: Generating VERSION.txt
+      command: npx semantic-release --generate-notes false --dry-run --debug
+        chdir="{{ shipmate_cargo_dir }}"
+        creates="{{ shipmate_cargo_dir }}/{{ shipmate_version_file }}"
+      register: tag
+    
+    - name: Look what I found ...
+      debug:
+        msg: "SemRel Result: {{ tag }}"
+        verbosity: 1
+    
+    - name: Reporting ...
+      debug:
+        msg: "{{ tag.stdout_lines[-1] }}"
+      when: "shipmate_cargo_version == '' or shipmate_cargo_version is undefined"
+
+  when: >
+    shipmate_cargo_version is undefined or shipmate_cargo_version == '' and
+    shipmate_merge_request is undefined and
+    shipmate_branch == shipmate_default_branch
+
+# - name: VERSION.txt not found. Updating Git ...
+#   shell: git fetch --tags -f
+#     chdir={{ shipmate_cargo_dir }}
+#   when: "shipmate_cargo_version == '' or shipmate_cargo_version is undefined"
+
+- name: Looking for VERSION.txt ...
+  set_fact:
+    shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+
+- name: Version ...
+  debug:
+    msg: "Version: {{ shipmate_cargo_version }}"
+  when: "shipmate_cargo_version != '' or shipmate_cargo_version is defined"
+
+- name: Giving up ...
+  fail:
+    msg: "YARRR! Cannot ship without a valid version. (Hint: VERSION.txt is missing)"
+  when: "shipmate_cargo_version == '' or shipmate_cargo_version is undefined"
+  

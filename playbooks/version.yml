@@ -1,4 +1,0 @@
----
-- name: Generate Semantic Version
-  command: npx semantic-release --generate-notes false --dry-run
-    chdir="../"

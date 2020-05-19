@@ -1,0 +1,10 @@
+- name: "Ahoi!"
+  hosts: shipmate
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: "Validate!"
+      debug:
+        msg: "shipmate_stage: {{ shipmate_stage }}"
+    - name: "{{ shipmate_stage }}!"
+      include: "stage-{{ shipmate_stage }}.yml"
