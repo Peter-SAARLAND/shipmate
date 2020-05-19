@@ -2,9 +2,10 @@
 ansible_python_interpreter: "/usr/bin/python3"
 
 # Shipmate
-shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default('/cargo', true) }}"
+shipmate_build_dir: "{{ lookup('env', 'CI_BUILDS_DIR')+'/'+lookup('env', 'CI_PROJECT_PATH') | default('/cargo')}}"
+shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default(shipmate_build_dir, true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
-shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('version'.split(','), true) }}"
+shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('gitlab'.split(','), true) }}"
 shipmate_name: "{{ lookup('env','SHIPMATE_NAME') | default('', true) }}"
 shipmate_author_name: "{{ lookup('env','SHIPMATE_AUTHOR_NAME') | default(shipmate_name, true) }}"
 shipmate_description: "{{ lookup('env','SHIPMATE_DESCRIPTION') | default('', true) }}"
@@ -20,6 +21,11 @@ shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERS
 shipmate_shipfile: "{{ lookup('env','SHIPMATE_SHIPFILE') | default('shipmate.env', true) }}"
 shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default('', true) }}"
 
+shipmate_commit_id: "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 'git rev-parse HEAD'), true) }}"
+shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default('master', true) }}"
+shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default('master', true) }}"
+shipmate_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
+shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('', true) }}"
 
 # Provider: Git
 git_default_remote:

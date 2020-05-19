@@ -14,7 +14,8 @@ endif
 
 export DOCKER_BUILDKIT=1
 IF0_ENVIRONMENT ?= zero
-DOCKER_SHELLFLAGS ?= run --rm -it -e IF0_ENVIRONMENT=${IF0_ENVIRONMENT} --name shipmate-${IF0_ENVIRONMENT} -v ${HOME}/.ssh:/root/.ssh -v ${PWD}:/shipmate -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/root/.if0/.environments/zero -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/cargo -v ${HOME}/.gitconfig:/root/.gitconfig shipmate
+DOCKER_IMAGE ?= shipmate
+DOCKER_SHELLFLAGS ?= run --rm -it -e IF0_ENVIRONMENT=${IF0_ENVIRONMENT} --name shipmate-${IF0_ENVIRONMENT} -v ${HOME}/.ssh:/root/.ssh -v ${PWD}:/shipmate -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/root/.if0/.environments/zero -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/cargo -v ${HOME}/.gitconfig:/root/.gitconfig ${DOCKER_IMAGE}
 export SHIPMATE_PROVIDERS ?= version
 export GL_TOKEN ?= 
 ENVIRONMENT_DIR ?= ${HOME}/.if0/.environments/zero
@@ -37,6 +38,10 @@ ship: ${CARGO_DIR}/VERSION.txt
 
 ${CARGO_DIR}/VERSION.txt: 
 >	@ansible-playbook /shipmate/playbooks/ahoi.yml ${ANSIBLE_V}
+
+.PHONY: stuff
+stuff:
+> @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
 
 .PHONY: retry
 retry:
