@@ -9,7 +9,7 @@ if [ -d $ENVIRONMENT_DIR ];
 then
   # ToDo: replace this with `if0 environment load`
   set -o allexport
-  export $(grep -hv '^#' $ENVIRONMENT_DIR/*.env | xargs) > /dev/null
+  export $(grep -hv '^#' $ENVIRONMENT_DIR/*.env | xargs) > /dev/null 2>&1
   set +o allexport
 fi
 
