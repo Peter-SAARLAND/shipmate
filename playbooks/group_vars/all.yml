@@ -2,7 +2,8 @@
 ansible_python_interpreter: "/usr/bin/python3"
 
 # Shipmate
-shipmate_build_dir: "{{ lookup('env', 'CI_BUILDS_DIR')+'/'+lookup('env', 'CI_PROJECT_PATH') | default('/cargo')}}"
+shipmate_project_name: "{{ lookup('env', 'CI_PROJECT_NAME') | default(lookup('env', 'PWD')) }}"
+shipmate_build_dir: "{{ lookup('env', 'CI_BUILDS_DIR')+'/'+lookup('env', 'CI_PROJECT_PATH') | default('/cargo') }}"
 shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default(shipmate_build_dir, true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
 shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('gitlab'.split(','), true) }}"
@@ -24,8 +25,15 @@ shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default('',
 shipmate_commit_id: "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 'git rev-parse HEAD'), true) }}"
 shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default('master', true) }}"
 shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default('master', true) }}"
-shipmate_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
+shipmate_stage: "{{ lookup('env', 'SHIPMATE_STAGE') | default(lookup('env','CI_JOB_STAGE') | default('tag', true)) }}"
 shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') }}"
+
+# Provider: Docker
+docker_image: "{{ lookup('env', 'CI_REGISTRY_IMAGE')+'/'+lookup('env', 'CI_COMMIT_REF_SLUG')+':'+lookup('env', 'CI_COMMIT_SHA') | default(shipmate_project_name+':'+shipmate_commit_id) }}"
+docker_image_name: "{{ lookup('env', 'CI_REGISTRY_IMAGE') | default(shipmate_project_name,true) }}"
+docker_image_branch: "{{ lookup('env', 'CI_COMMIT_REF_SLUG') | default(shipmate_default_branch,true) }}"
+docker_image_tag: "{{ lookup('env', 'CI_COMMIT_SHA') | default(shipmate_commit_id,true) }}"
+docker_image_repository: "{{ lookup('env', 'CI_REGISTRY_IMAGE') | default('',true) }}"
 
 # Provider: Git
 git_default_remote:
