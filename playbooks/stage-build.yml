@@ -1,7 +1,11 @@
-- name: Ensure CHANGELOG.md exists
-  file:
-    path: "{{ shipmate_cargo_dir }}/CHANGELOG.md"
-    state: touch
+- name: Build
+  block:
+    - name: "Include Build Routines for {{ item }}"
+      include_tasks: "provider-{{ item }}.yml"
+      with_items: "{{ shipmate_providers }}"
+  when: 
+
+
 
 - name: Publish Release
   command: npx semantic-release
@@ -12,3 +16,4 @@
   debug:
     msg: "SemRel Result: {{ semantic_release }}"
     verbosity: 1
+

@@ -1,0 +1,39 @@
+- name: Build
+  block:
+    - name: "Build {{ shipmate_cargo_version }}"
+      docker_image:
+        name: "{{ docker_image_name }}"
+        tag: "{{ docker_image_tag }}"
+        repository: "{{ docker_image_repository+'/'+docker_image_branch }}"
+        push: yes
+        source: build
+        build:
+          path: Dockerfile
+          args: 
+            BUILD_DATE: lookup('pipe','date -u +'%Y-%m-%dT%H:%M:%SZ')
+            BUILD_VERSION: "{{ shipmate_cargo_version }}"
+      register: shipmate_build_docker
+  when: >
+    shipmate_stage == "build"
+
+- name: Ship
+  block:
+    - name: Tag latest
+      docker_image:
+        name: "{{ docker_image_name }}"
+        tag: "latest"
+        repository: "{{ docker_image_repository }}"
+        force_tag: yes
+        source: pull
+      register: shipmate_ship_docker
+
+    - name: "Tag {{ shipmate_cargo_version }}"
+      docker_image:
+        name: "{{ docker_image_name }}"
+        tag: "{{ 'v'+shipmate_cargo_version }}"
+        repository: "{{ docker_image_repository }}"
+        force_tag: yes
+        source: pull
+      register: shipmate_ship_docker
+  when: >
+    shipmate_stage == "build"
