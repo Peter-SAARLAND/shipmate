@@ -63,4 +63,4 @@ ssh: ${ENVIRONMENT_DIR}/.ssh/id_rsa ${ENVIRONMENT_DIR}/.ssh/id_rsa.pub
 
 .PHONY: inventory
 inventory:
-> @python inventory/zero.py --list | jq
+> @ansible-inventory -i inventory/shipmate.yml --list | jq

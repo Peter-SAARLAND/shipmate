@@ -25,7 +25,7 @@ shipmate_commit_id: "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 
 shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default('master', true) }}"
 shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default('master', true) }}"
 shipmate_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
-shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('', true) }}"
+shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') }}"
 
 # Provider: Git
 git_default_remote:
