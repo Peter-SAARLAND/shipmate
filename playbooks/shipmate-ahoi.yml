@@ -30,6 +30,7 @@
         msg: 
           - "Stage: {{ shipmate_stage }}"
           - "Commit ID: {{ shipmate_commit_id }}"
+          - "Commit Message: {{ shipmate_commit_message }}"
           - "Branch: {{ shipmate_branch }}"
           - "Image: {{ docker_image }}"
           - "Providers: {{ shipmate_providers_string }}"

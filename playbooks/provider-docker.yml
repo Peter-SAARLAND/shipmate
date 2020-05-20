@@ -16,8 +16,10 @@
         verbosity: 1
     
     - name: "Push {{ shipmate_cargo_version }}"
-      command: echo "docker push {{ docker_image }}"
+      command: docker push {{ docker_image }}
         chdir="{{ shipmate_cargo_dir }}" 
+      when: >
+        docker_image_registry_path != ''
   when: >
     shipmate_stage == "build" and
     shipmate_cargo_version != '' or shipmate_cargo_version is defined
