@@ -1,12 +1,10 @@
-# Ansible
-ansible_python_interpreter: "/usr/bin/python3"
-
 # Shipmate
-shipmate_project_name: "{{ lookup('env', 'CI_PROJECT_NAME') | default(lookup('env', 'PWD')) }}"
+shipmate_project_name: "{{ lookup('env', 'CI_PROJECT_NAME') | default(lookup('env', 'PWD').split('/')[-1], true) }}"
 shipmate_build_dir: "{{ lookup('env', 'CI_BUILDS_DIR')+'/'+lookup('env', 'CI_PROJECT_PATH') | default('/cargo') }}"
 shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default(shipmate_build_dir, true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
-shipmate_providers: "{{ lookup('env','SHIPMATE_PROVIDERS').split(',') | default('gitlab'.split(','), true) }}"
+shipmate_providers_string: "{{ lookup('env','SHIPMATE_PROVIDERS') | default('docker', true) }}"
+shipmate_providers: "{{ lookup('vars','shipmate_providers_string').split(',') }}"
 shipmate_name: "{{ lookup('env','SHIPMATE_NAME') | default('', true) }}"
 shipmate_author_name: "{{ lookup('env','SHIPMATE_AUTHOR_NAME') | default(shipmate_name, true) }}"
 shipmate_description: "{{ lookup('env','SHIPMATE_DESCRIPTION') | default('', true) }}"
@@ -20,20 +18,37 @@ shipmate_website: "{{ lookup('env','SHIPMATE_WEBSITE') | default('', true) }}"
 shipmate_issues: "{{ lookup('env','SHIPMATE_ISSUES') | default('', true) }}"
 shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERSION.txt', true) }}"
 shipmate_shipfile: "{{ lookup('env','SHIPMATE_SHIPFILE') | default('shipmate.env', true) }}"
-shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default('', true) }}"
 
 shipmate_commit_id: "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 'git rev-parse HEAD'), true) }}"
-shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default('master', true) }}"
 shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default('master', true) }}"
+shipmate_branch: "{{ lookup('pipe', 'git rev-parse --abbrev-ref HEAD') | default(shipmate_default_branch, true) }}"
 shipmate_stage: "{{ lookup('env', 'SHIPMATE_STAGE') | default(lookup('env','CI_JOB_STAGE') | default('tag', true)) }}"
 shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') }}"
 
+shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default(shipmate_commit_id, true) }}"
+
 # Provider: Docker
-docker_image: "{{ lookup('env', 'CI_REGISTRY_IMAGE')+'/'+lookup('env', 'CI_COMMIT_REF_SLUG')+':'+lookup('env', 'CI_COMMIT_SHA') | default(shipmate_project_name+':'+shipmate_commit_id) }}"
-docker_image_name: "{{ lookup('env', 'CI_REGISTRY_IMAGE') | default(shipmate_project_name,true) }}"
-docker_image_branch: "{{ lookup('env', 'CI_COMMIT_REF_SLUG') | default(shipmate_default_branch,true) }}"
-docker_image_tag: "{{ lookup('env', 'CI_COMMIT_SHA') | default(shipmate_commit_id,true) }}"
-docker_image_repository: "{{ lookup('env', 'CI_REGISTRY_IMAGE') | default('',true) }}"
+# docker_image_branch: subtool
+# peter.saarland/shipmate/subtool
+docker_image_branch: "{{ lookup('env', 'CI_COMMIT_REF_SLUG') | default(shipmate_branch,true) }}"
+
+# docker_image_version: 1.2.3
+# peter.saarland/shipmate:1.2.3
+docker_image_version: "{{ lookup('env', 'CI_COMMIT_SHA') | default(shipmate_commit_id,true) }}"
+
+# docker_image_repository: peter.saarland/shipmate
+# peter.saarland/shipmate
+docker_image_repository: "{{ lookup('env', 'CI_PROJECT_PATH') | default(shipmate_project_name,true) }}"
+
+# docker_image_repository: registry.gitlab.com
+# registry.gitlab.com/peter.saarland/shipmate
+docker_image_registry: "{{ lookup('env','CI_REGISTRY') | default('', true) }}"
+docker_image_registry_path: "{{ docker_image_registry+'/' if docker_image_registry else '' }}"
+
+# docker_image: $docker_image_registry/$docker_image_repository[/$docker_image_branch]:$docker_image_version
+docker_image: "{{ lookup('vars','docker_image_registry_path', default='')+docker_image_repository+'/'+docker_image_branch+':'+docker_image_version }}"
+
+docker_base_image: "{{ lookup('env','DOCKER_BASE_IMAGE') | default('', true) }}"
 
 # Provider: Git
 git_default_remote:
