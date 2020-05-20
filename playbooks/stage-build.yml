@@ -1,19 +1,6 @@
 - name: Build
   block:
-    - name: "Include Build Routines for {{ item }}"
+    - name: "Including Build Providers"
       include_tasks: "provider-{{ item }}.yml"
       with_items: "{{ shipmate_providers }}"
-  when: 
-
-
-
-- name: Publish Release
-  command: npx semantic-release
-    chdir="{{ shipmate_cargo_dir }}"
-  register: semantic_release
-
-- name: Look what I found ...
-  debug:
-    msg: "SemRel Result: {{ semantic_release }}"
-    verbosity: 1
-
+  when:

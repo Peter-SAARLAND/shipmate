@@ -17,11 +17,6 @@
 
 - name: "Generating Version"
   block:
-    - name: Loading Default .releaserc
-      template:
-        src: templates/.releaserc.yml.j2
-        dest: "{{ shipmate_cargo_dir }}/.releaserc.yml"
-    
     - name: Generating Version
       command: npx semantic-release --generate-notes false --dry-run --debug
         chdir="{{ shipmate_cargo_dir }}"

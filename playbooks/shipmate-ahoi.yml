@@ -1,8 +1,18 @@
 - name: "Ahoi!"
   hosts: shipmate
   connection: local
-  gather_facts: false
+  gather_facts: true
   tasks:
+    - name: Loading Default .releaserc
+      template:
+        src: templates/.releaserc.yml.j2
+        dest: "{{ shipmate_cargo_dir }}/.releaserc.yml"
+    - debug: 
+        msg: 
+          - "{{ docker_image }}"
+          - "{{ shipmate_project_name }}"
+          - "{{ shipmate_providers }}"
+    
     - name: "Running Stage"
       include: "stage-{{ shipmate_stage }}.yml"
 
@@ -13,6 +23,7 @@
       with_items:
         - "{{ shipmate_cargo_dir }}/{{ shipmate_version_file }}"
         - "{{ shipmate_cargo_dir }}/.releaserc.yml"
+        - "{{ shipmate_cargo_dir }}/CHANGELOG.md"
     
     - name: "Reporting on Shipment"
       debug:
@@ -20,7 +31,9 @@
           - "Stage: {{ shipmate_stage }}"
           - "Commit ID: {{ shipmate_commit_id }}"
           - "Branch: {{ shipmate_branch }}"
-          - "Merge Request ID: {{ lookup('env', 'CI_MERGE_REQUEST_ID') | default('UNKNOWN') }}"
-          - "Merge Request IID: {{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('UNKNOWN') }}"
-          - "Version: {{ shipmate_cargo_version }}"
+          - "Image: {{ docker_image }}"
+          - "Providers: {{ shipmate_providers_string }}"
+          - "Merge Request ID: {{ lookup('env', 'CI_MERGE_REQUEST_ID') | default('UNKNOWN', true) }}"
+          - "Merge Request IID: {{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('UNKNOWN', true) }}"
+          - "Version: {{ shipmate_cargo_version | default('UKNOWN') }}"
       when: "shipmate_cargo_version != '' or shipmate_cargo_version is defined"

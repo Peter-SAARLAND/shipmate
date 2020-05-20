@@ -1,7 +1,0 @@
-SHIPMATE_PROVIDERS=ansible-galaxy
-ANSIBLE_GALAXY_NAMESPACE=derfabianpeter
-SHIPMATE_NAME=shipmate
-SHIPMATE_DESCRIPTION="Shipmate!"
-SHIPMATE_TAGS="devops,ansible,zero"
-SHIPMATE_WEBSITE=https://www.peter.saarland
-SHIPMATE_ISSUES=https://gitlab.com/peter.saarland/shipmate/-/issues

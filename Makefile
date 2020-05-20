@@ -14,9 +14,9 @@ endif
 
 export DOCKER_BUILDKIT=1
 IF0_ENVIRONMENT ?= zero
-DOCKER_IMAGE ?= shipmate
-DOCKER_SHELLFLAGS ?= run --rm -it -e IF0_ENVIRONMENT=${IF0_ENVIRONMENT} --name shipmate-${IF0_ENVIRONMENT} -v ${HOME}/.ssh:/root/.ssh -v ${PWD}:/shipmate -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/root/.if0/.environments/zero -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/cargo -v ${HOME}/.gitconfig:/root/.gitconfig ${DOCKER_IMAGE}
-export SHIPMATE_PROVIDERS ?= version
+DOCKER_BASE_IMAGE ?= registry.gitlab.com/peter.saarland/ansible-boilerplate:latest
+export DOCKER_IMAGE ?= shipmate
+DOCKER_SHELLFLAGS ?= run --privileged --rm -it -e IF0_ENVIRONMENT=${IF0_ENVIRONMENT} --name shipmate-${IF0_ENVIRONMENT} -v ${HOME}/.ssh:/root/.ssh -v ${PWD}:/shipmate -v ${HOME}/.if0/.environments/${IF0_ENVIRONMENT}:/root/.if0/.environments/zero -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/cargo -v ${HOME}/.gitconfig:/root/.gitconfig ${DOCKER_IMAGE}
 export GL_TOKEN ?= 
 ENVIRONMENT_DIR ?= ${HOME}/.if0/.environments/zero
 ANSIBLE_V ?= 
@@ -33,12 +33,6 @@ load: /tmp/.loaded.sentinel
 > @if [ ! -z $$DASH1_MODULE ]; then echo "Loading Provider ${DASH1_MODULE}"; else echo "No Provider selected. Exit."; exit 1; fi
 > @touch /tmp/.loaded.sentinel
 
-.PHONY: ship
-ship: ${CARGO_DIR}/VERSION.txt
-
-${CARGO_DIR}/VERSION.txt: 
->	@ansible-playbook /shipmate/playbooks/ahoi.yml ${ANSIBLE_V}
-
 .PHONY: stuff
 stuff:
 > @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
@@ -47,20 +41,36 @@ stuff:
 retry:
 > @ansible-playbook provision.yml --limit @/root/.ansible/.retry/provision.retry
 
-# Development
-.PHONY: build
-build:
-> @docker build --pull -t shipmate .
+.PHONY: tag
+tag: ## Run 'tag' stage
+> @export SHIPMATE_STAGE=tag
+> @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
 
-.PHONY: run
-run: .SHELLFLAGS = ${DOCKER_SHELLFLAGS}
-run: SHELL := docker
-run:
+.PHONY: build
+build: ## Run 'build' stage
+> @export SHIPMATE_STAGE=build
+> @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
+
+.PHONY: ship
+ship: ## Run 'ship' stage
+> @export SHIPMATE_STAGE=ship
+> @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
+
+
+.PHONY: build-local
+build-local: ## Development: build local Docker image
+build-local: 
+> @docker build --build-arg DOCKER_BASE_IMAGE=ansible-boilerplate -t shipmate .
+
+.PHONY: dev
+dev: .SHELLFLAGS = ${DOCKER_SHELLFLAGS}
+dev: SHELL := docker
+dev: ## Development: run local Docker image
 > @bash
 
 .PHONY: ssh
-ssh: ${ENVIRONMENT_DIR}/.ssh/id_rsa ${ENVIRONMENT_DIR}/.ssh/id_rsa.pub
+ssh: ${ENVIRONMENT_DIR}/.ssh/id_rsa ${ENVIRONMENT_DIR}/.ssh/id_rsa.pub ## Development: generate SSH Keys in Environment Directory
 
 .PHONY: inventory
-inventory:
+inventory: ## Development: list ansible inventory
 > @ansible-inventory -i inventory/shipmate.yml --list | jq

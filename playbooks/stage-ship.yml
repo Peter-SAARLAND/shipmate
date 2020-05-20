@@ -3,12 +3,25 @@
     path: "{{ shipmate_cargo_dir }}/CHANGELOG.md"
     state: touch
 
-- name: Publish Release
-  command: npx semantic-release
-    chdir="{{ shipmate_cargo_dir }}"
-  register: semantic_release
+- name: Ship
+  block:
+    - name: "Including Ship Providers"
+      include_tasks: "provider-{{ item }}.yml"
+      with_items: "{{ shipmate_providers }}"
 
-- name: Look what I found ...
-  debug:
-    msg: "SemRel Result: {{ semantic_release }}"
-    verbosity: 1
+    - name: Publish Release
+      command: npx semantic-release
+        chdir="{{ shipmate_cargo_dir }}"
+      register: ship
+
+    - name: Reporting
+      debug:
+        msg: "{{ ship.stdout.split('\n') }}"
+        verbosity: 1
+      when: >
+        ship is defined
+  when:
+
+
+
+
