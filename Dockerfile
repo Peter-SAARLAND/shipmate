@@ -5,7 +5,7 @@ LABEL maintainer="Fabian Peter <fabian@peter.saarland>"
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV SHIPMATE_SHIPFILE=Shipfile
 ENV ENVIRONMENT_DIR=/root/.if0/.environments/zero
-ENV ANSIBLE_STRATEGY=free
+ENV ANSIBLE_STRATEGY=linear
 
 RUN mkdir -p ${ENVIRONMENT_DIR} /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
 
