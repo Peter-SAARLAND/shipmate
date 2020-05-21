@@ -12,6 +12,7 @@
           - "{{ docker_image }}"
           - "{{ shipmate_project_name }}"
           - "{{ shipmate_providers }}"
+          - "{{ shipmate_stage }}"
     
     - name: "Running Stage"
       include: "stage-{{ shipmate_stage }}.yml"
