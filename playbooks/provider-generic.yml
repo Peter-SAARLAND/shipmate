@@ -1,0 +1,26 @@
+- name: Ship
+  block:
+    - name: Ensure CHANGELOG.md exists
+      file:
+        path: "{{ shipmate_cargo_dir }}/CHANGELOG.md"
+        state: touch
+
+    - name: Publish Release
+      command: npx semantic-release
+        chdir="{{ shipmate_cargo_dir }}"
+      register: ship
+
+    - name: Reporting
+      debug:
+        msg: "{{ ship.stdout.split('\n') }}"
+      when: >
+        ship is defined and ship.stdout_lines|length > 0
+    
+    - name: Evaluating Version
+      set_fact:
+        shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+      failed_when: false
+      ignore_errors: True
+      no_log: True
+  when: >
+    shipmate_stage == "ship"

@@ -2,8 +2,24 @@ ARG DOCKER_BASE_IMAGE
 FROM ${DOCKER_BASE_IMAGE:-registry.gitlab.com/peter.saarland/ansible-boilerplate:latest}
 LABEL maintainer="Fabian Peter <fabian@peter.saarland>"
 
+ARG DOCKER_IMAGE
+ARG SHIPMATE_AUTHOR_URL
+ARG SHIPMATE_AUTHOR
+ARG SHIPMATE_BUILD_DATE
+ARG SHIPMATE_CARGO_VERSION
+ARG SHIPMATE_COMMIT_ID
+ARG THIS_VERSION
+
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date="$SHIPMATE_BUILD_DATE"
+LABEL org.label-schema.name="$DOCKER_IMAGE"
+LABEL org.label-schema.vendor="$SHIPMATE_AUTHOR"
+LABEL org.label-schema.url="$SHIPMATE_AUTHOR_URL"
+LABEL org.label-schema.version="$SHIPMATE_CARGO_VERSION"
+LABEL org.label-schema.vcs-ref="$SHIPMATE_COMMIT_ID"
+
 ENV SHIPMATE_CARGO_DIR=/cargo
-ENV SHIPMATE_SHIPFILE=Shipfile
+ENV THIS_VERSION=${THIS_VERSION}
 ENV ENVIRONMENT_DIR=/root/.if0/.environments/zero
 ENV ANSIBLE_STRATEGY=linear
 
