@@ -9,11 +9,6 @@
       command: docker build -t {{ docker_image }} --build-arg SHIPMATE_CARGO_VERSION={{ shipmate_cargo_version }} --build-arg DOCKER_BASE_IMAGE={{ docker_base_image }} .
         chdir="{{ shipmate_cargo_dir }}"
       register: shipmate_build_docker
-
-    - name: Reporting
-      debug:
-        msg: "Building {{ docker_image }}"
-        verbosity: 1
     
     - name: "Push {{ shipmate_cargo_version }}"
       command: docker push {{ docker_image }}
@@ -21,8 +16,8 @@
       when: >
         docker_image_registry_path != ''
   when: >
-    shipmate_stage == "build" and
-    shipmate_cargo_version != '' or shipmate_cargo_version is defined
+    shipmate_stage == 'build' and 
+    shipmate_cargo_version != '' and shipmate_cargo_version is defined
 
 - name: Ship
   block:
@@ -31,14 +26,14 @@
         chdir="{{ shipmate_cargo_dir }}" 
       with_items:
         -  "latest"
-        - "{{ docker_image_version }}"
+        - "v{{ shipmate_cargo_version }}"
 
     - name: Ship
       command: docker push {{ lookup('vars','docker_image_registry_path', default='')+docker_image_repository+'/'+docker_image_branch+':'+item }}
         chdir="{{ shipmate_cargo_dir }}"   
       with_items:
         -  "latest"
-        - "{{ docker_image_version }}"
+        - "v{{ shipmate_cargo_version }}"
       when: >
         docker_image_registry_path != ''
   when: >
