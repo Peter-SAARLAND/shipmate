@@ -25,6 +25,8 @@
         - "{{ shipmate_cargo_dir }}/{{ shipmate_version_file }}"
         - "{{ shipmate_cargo_dir }}/.releaserc.yml"
         - "{{ shipmate_cargo_dir }}/CHANGELOG.md"
+      when: >
+        not shipmate_ci
     
     - name: "Reporting on Shipment"
       debug:

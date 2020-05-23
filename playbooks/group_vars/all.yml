@@ -26,6 +26,7 @@ shipmate_branch: "{{ lookup('pipe', 'git rev-parse --abbrev-ref HEAD') | default
 shipmate_ci_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
 shipmate_stage: "{{ lookup('env', 'SHIPMATE_STAGE') | default(shipmate_ci_stage, true) }}"
 shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') }}"
+shipmate_ci: "{{ lookup('env', 'CI')|bool | default(False, true) }}"
 
 shipmate_cargo_version: "{{ lookup('env','SHIPMATE_CARGO_VERSION') | default(shipmate_commit_id, true) }}"
 
