@@ -32,12 +32,12 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && apt-get install -y --no-install-recommends nodejs docker-ce-cli \
   && npm install --global semantic-release @semantic-release/gitlab @semantic-release/exec @semantic-release/changelog
 
-
 WORKDIR /shipmate
 
 COPY . .
 
-RUN echo 'export PS1="[\$IF0_ENVIRONMENT] \W # "' >> /root/.bashrc
+RUN echo 'export PS1="[\$IF0_ENVIRONMENT] \W # "' >> /root/.bashrc \
+    && echo "$THIS_VERSION" > /shipmate/VERSION.txt
 
 ENTRYPOINT ["/shipmate/docker-entrypoint.sh"]
 
