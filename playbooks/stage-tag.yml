@@ -28,8 +28,6 @@
     - name: Reporting
       debug:
         msg: "{{ tag.stdout.split('\n') }}"
-      when: >
-        shipmate_cargo_version == '' or shipmate_cargo_version is undefined
 
     - name: Error Reporting
       pause:
@@ -53,15 +51,40 @@
   when: >
     shipmate_cargo_version is undefined or shipmate_cargo_version == ''
 
+- name: Evaluating Version
+  set_fact:
+    shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+  failed_when: false
+  ignore_errors: True
+  no_log: True
+
+- name: "Generating Version"
+  block:
+    - name: Generating Version
+      copy: 
+        content="{{ shipmate_commit_id }}-{{ shipmate_branch }}" 
+        dest={{ shipmate_cargo_dir }}/{{ shipmate_version_file }}
+      register: tag
+      no_log: true
+      ignore_errors: True
+
+    - name: Reporting
+      debug:
+        msg: "{{ tag.stdout.split('\n') }}"
+
+  when: >
+    shipmate_cargo_version is undefined or shipmate_cargo_version == ''
+
+- name: Evaluating Version
+  set_fact:
+    shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+  no_log: True
+  when: >
+    shipmate_cargo_version is undefined or shipmate_cargo_version == ''
 # - name: VERSION.txt not found. Updating Git ...
 #   shell: git fetch --tags -f
 #     chdir={{ shipmate_cargo_dir }}
 #   when: "shipmate_cargo_version == '' or shipmate_cargo_version is undefined"
-
-- name: Fetching Version
-  set_fact:
-    shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
-  no_log: True
   
 - name: Giving up
   fail:
