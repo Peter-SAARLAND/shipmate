@@ -9,10 +9,10 @@
         dest: "{{ shipmate_cargo_dir }}/.releaserc.yml"
     - debug: 
         msg: 
-          - "{{ docker_image }}"
-          - "{{ shipmate_project_name }}"
-          - "{{ shipmate_providers }}"
-          - "{{ shipmate_stage }}"
+          - "Docker Image: {{ docker_image }}"
+          - "Project Name: {{ shipmate_project_name }}"
+          - "Shipmate Providers: {{ shipmate_providers }}"
+          - "Shipmate Stage: {{ shipmate_stage }}"
     
     - name: "Running Stage"
       include: "stage-{{ shipmate_stage }}.yml"

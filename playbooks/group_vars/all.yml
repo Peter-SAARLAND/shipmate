@@ -3,7 +3,7 @@ shipmate_project_name: "{{ lookup('env', 'CI_PROJECT_NAME') | default(lookup('en
 shipmate_build_dir: "{{ lookup('env', 'CI_BUILDS_DIR')+'/'+lookup('env', 'CI_PROJECT_PATH') | default('/cargo') }}"
 shipmate_cargo_dir: "{{ lookup('env','SHIPMATE_CARGO_DIR') | default(shipmate_build_dir, true) }}"
 shipmate_provider: "{{ lookup('env','SHIPMATE_PROVIDER') | default('ansible-galaxy', true) }}"
-shipmate_providers_string: "{{ lookup('env','SHIPMATE_PROVIDERS') | default('docker', true) }}"
+shipmate_providers_string: "{{ lookup('env','SHIPMATE_PROVIDERS') | default('generic', true) }}"
 shipmate_providers: "{{ lookup('vars','shipmate_providers_string').split(',') }}"
 shipmate_name: "{{ lookup('env','SHIPMATE_NAME') | default('', true) }}"
 shipmate_author_name: "{{ lookup('env','SHIPMATE_AUTHOR_NAME') | default(shipmate_name, true) }}"
