@@ -28,20 +28,28 @@
     - name: Reporting
       debug:
         msg: "{{ tag.stdout.split('\n') }}"
+      when: >
+        tag.stdout_lines|length > 0
 
     - name: Error Reporting
-      pause:
-        seconds: 1
-        prompt: |
-          #############################################
-          ERROR
-          #############################################
-          {% for message in tag.stderr_lines %}
-          {{ message }}
-          {% endfor %}
-          #############################################
+      debug:
+        msg: "{{ tag.stderr.split('\n') }}"
       when: >
         tag.stderr_lines|length > 0
+
+    # - name: Error Reporting
+    #   pause:
+    #     seconds: 1
+    #     prompt: |
+    #       #############################################
+    #       ERROR
+    #       #############################################
+    #       {% for message in tag.stderr_lines %}
+    #       {{ message }}
+    #       {% endfor %}
+    #       #############################################
+    #   when: >
+    #     tag.stderr_lines|length > 0
 
     - name: Deleting Default .releaserc
       file:
@@ -67,10 +75,6 @@
       register: tag
       no_log: true
       ignore_errors: True
-
-    - name: Reporting
-      debug:
-        msg: "{{ tag.stdout.split('\n') }}"
 
   when: >
     shipmate_cargo_version is undefined or shipmate_cargo_version == ''
