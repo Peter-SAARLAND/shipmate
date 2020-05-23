@@ -1,4 +1,4 @@
-- name: Evaluating Version
+- name: Evaluating Cargo Version
   set_fact:
     shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
   failed_when: false
@@ -15,7 +15,7 @@
 #     shipmate_merge_request is defined or shipmate_merge_request != "" and
 #     shipmate_cargo_version is undefined or shipmate_cargo_version == ''
 
-- name: "Generating Version"
+- name: "Generating Cargo Version"
   block:
     - name: Generating Version
       command: npx semantic-release --generate-notes false --dry-run --debug
@@ -59,14 +59,14 @@
   when: >
     shipmate_cargo_version is undefined or shipmate_cargo_version == ''
 
-- name: Evaluating Version
+- name: Evaluating Cargo Version
   set_fact:
     shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
   failed_when: false
   ignore_errors: True
   no_log: True
 
-- name: "Generating Version"
+- name: "Generating Cargo Version"
   block:
     - name: Generating Version
       copy: 
@@ -79,7 +79,7 @@
   when: >
     shipmate_cargo_version is undefined or shipmate_cargo_version == ''
 
-- name: Evaluating Version
+- name: Evaluating Cargo Version
   set_fact:
     shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
   no_log: True

@@ -7,12 +7,15 @@
       template:
         src: templates/.releaserc.yml.j2
         dest: "{{ shipmate_cargo_dir }}/.releaserc.yml"
+
     - debug: 
         msg: 
-          - "Docker Image: {{ docker_image }}"
-          - "Project Name: {{ shipmate_project_name }}"
-          - "Shipmate Providers: {{ shipmate_providers }}"
+          - "Shipmate Version: {{ this_version }}"
+          - "Shipmate CI: {{ shipmate_ci }}"
           - "Shipmate Stage: {{ shipmate_stage }}"
+          - "Shipmate Providers: {{ shipmate_providers }}"
+          - "Shipmate Project Name: {{ shipmate_project_name }}"
+          - "Shipmate Branch: {{ shipmate_branch }}"
     
     - name: "Running Stage"
       include: "stage-{{ shipmate_stage }}.yml"
@@ -31,13 +34,15 @@
     - name: "Reporting on Shipment"
       debug:
         msg: 
-          - "Stage: {{ shipmate_stage }}"
-          - "Commit ID: {{ shipmate_commit_id }}"
-          - "Commit Message: {{ shipmate_commit_message }}"
-          - "Branch: {{ shipmate_branch }}"
-          - "Image: {{ docker_image }}"
-          - "Providers: {{ shipmate_providers_string }}"
-          - "Merge Request ID: {{ lookup('env', 'CI_MERGE_REQUEST_ID') | default('UNKNOWN', true) }}"
-          - "Merge Request IID: {{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('UNKNOWN', true) }}"
-          - "Version: {{ shipmate_cargo_version | default('UKNOWN') }}"
-      when: "shipmate_cargo_version != '' or shipmate_cargo_version is defined"
+          - "Shipmate Version: {{ this_version }}"
+          - "Shipmate CI: {{ shipmate_ci }}"
+          - "Shipmate Stage: {{ shipmate_stage }}"
+          - "Shipmate Branch: {{ shipmate_branch }}"
+          - "Shipmate Commit ID: {{ shipmate_commit_id }}"
+          - "Shimate Commit Message: {{ shipmate_commit_message }}"
+          - "Shipmate Docker Image: {{ docker_image }}"
+          - "Shipmate Providers: {{ shipmate_providers_string }}"
+          - "Shipmate Merge Request ID: {{ lookup('env', 'CI_MERGE_REQUEST_ID') | default('UNKNOWN', true) }}"
+          - "Shipmate Merge Request IID: {{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('UNKNOWN', true) }}"
+          - "Shipmate Cargo Version: {{ shipmate_cargo_version | default('UKNOWN') }}"
+      when: "shipmate_cargo_version != '' and shipmate_cargo_version is defined"
