@@ -1,0 +1,16 @@
+- name: Discover Docker
+  block:
+    - name:  Check for Dockerfile
+      stat:
+        path: "{{ shipmate_cargo_dir }}/Dockerfile"
+      register: Dockerfile
+  
+    - name: Register Docker provider
+      set_fact: 
+        shipmate_providers: "{{ shipmate_providers + ['docker'] }}"
+      when: Dockerfile.stat.exists
+
+    - name: Report
+      debug: 
+        msg: "Discovered Provider 'docker'"
+      when: Dockerfile.stat.exists

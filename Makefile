@@ -56,6 +56,12 @@ ship: ## Run 'ship' stage
 > @export SHIPMATE_STAGE=ship
 > @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V}
 
+.PHONY: check
+check: ## Run 'ship' stage
+> @export SHIPMATE_STAGE=tag
+> @ansible-playbook /shipmate/shipmate.yml ${ANSIBLE_V} --check
+
+
 
 .PHONY: build-local
 build-local: ## Development: build local Docker image
