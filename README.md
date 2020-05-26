@@ -12,6 +12,8 @@ This software is developed on GitLab and mirrored to GitHub.
 - [if0](https://gitlab.com/peter.saarland/if0/) - The CLI to tool them all
 - [lake0](https://gitlab.com/peter.saarland/lake0/) - Container-native Backups
 - [ns0](https://gitlab.com/peter.saarland/ns0/) - The container-native DNS Proxy
+- [shipmate](https://gitlab.com/peter.saarland/shipmate/) - Release Distribution Automation
+- [shopware](https://gitlab.com/peter.saarland/shopware/) - Shopware 5 in Docker
 - [zero](https://gitlab.com/peter.saarland/zero/) - The Application Platform
 
 ## Contact
