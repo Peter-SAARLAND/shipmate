@@ -71,7 +71,7 @@
         msg: "{{ item.stdout.split('\n') }}"
         verbosity: 1
       when: >
-        shipmate_tag_docker is defined and 
+        shipmate_tag_docker.stdout_lines is defined and 
         shipmate_tag_docker.stdout_lines|length > 0
       with_items: "{{ shipmate_tag_docker.results }}"
       ignore_errors: True
@@ -91,7 +91,7 @@
         msg: "{{ item.stdout.split('\n') }}"
         verbosity: 1
       when: >
-        shipmate_push_docker is defined and
+        shipmate_push_docker.stdout_lines is defined and
         shipmate_push_docker.stdout_lines|length > 0
       with_items: "{{ shipmate_push_docker.results }}"
       ignore_errors: True
