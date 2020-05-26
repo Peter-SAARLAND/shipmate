@@ -1,31 +1,22 @@
 # Get Started
 
-## Install Ansible
+**shipmate** - automate your software logistics
 
-### MacOS
+## About
 
-```
-brew install ansible
-```
+**shipmate** is a tool to automate chores around software releases. 
 
-## Install Ansible Dependencies
+- automated semantic versioning with [semantic-release](https://github.com/semantic-release/semantic-release)
+- automated Docker builds
+- tightly integrated with GitLab
 
-```
-requirements.yml
-```
+## Use it
 
-## Install NodeJS
-
-### MacOS
+**It's simple!** Just include the following code in your repository's `.gitlab-ci-yml`:
 
 ```
-brew install node@14
-```
-
-## Install semantic-release
-
-```
-npm install @semantic-release/gitlab @semantic-release/exec @semantic-release/changelog
+include:
+  - remote: "https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/shipmate.gitlab-ci.yml"
 ```
 
 ## Use in CI
