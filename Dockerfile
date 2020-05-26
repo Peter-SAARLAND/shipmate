@@ -20,10 +20,9 @@ LABEL org.label-schema.vcs-ref="$SHIPMATE_COMMIT_ID"
 
 ENV SHIPMATE_CARGO_DIR=/cargo
 ENV THIS_VERSION=${THIS_VERSION}
-ENV ENVIRONMENT_DIR=/root/.if0/.environments/zero
 ENV ANSIBLE_STRATEGY=linear
 
-RUN mkdir -p ${ENVIRONMENT_DIR} /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
+RUN mkdir -p /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
