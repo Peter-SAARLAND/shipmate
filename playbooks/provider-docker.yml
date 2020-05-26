@@ -64,10 +64,12 @@
 
     - name: Reporting
       debug:
-        msg: "{{ shipmate_tag_docker.stdout.split('\n') }}"
+        msg: "{{ item.stdout.split('\n') }}"
         verbosity: 1
       when: >
+        shipmate_tag_docker is defined and 
         shipmate_tag_docker.stdout_lines|length > 0
+      with_items: "{{ shipmate_tag_docker.results }}"
 
     - name: Ship
       command: docker push {{ lookup('vars','docker_image_registry_path', default='')+docker_image_repository+'/'+docker_image_branch+':'+item }}
@@ -81,10 +83,12 @@
 
     - name: Reporting
       debug:
-        msg: "{{ shipmate_push_docker.stdout.split('\n') }}"
+        msg: "{{ item.stdout.split('\n') }}"
         verbosity: 1
       when: >
+        shipmate_push_docker is defined and
         shipmate_push_docker.stdout_lines|length > 0
+      with_items: "{{ shipmate_push_docker.results }}"
 
   when: >
     shipmate_stage == "ship"
