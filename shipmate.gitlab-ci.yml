@@ -14,7 +14,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   SHIPMATE_CARGO_DIR: $CI_BUILDS_DIR/$CI_PROJECT_PATH
-  SHIPMATE_VERSION: "1.11.2"
+  SHIPMATE_VERSION: "1.12.0"
 
 .branch-master: &branch-master
   if: '$CI_PROJECT_NAMESPACE !~ /^gitlab(-org)?($|\/)/'
@@ -38,15 +38,15 @@ variables:
 .shipmate:rules:tag:
   rules:
     - <<: *branch-master
-      when: always
+      when: on_success
     - <<: *branch-alpha
       when: always
     - <<: *branch-maintenance
-      when: always
+      when: on_success
     - <<: *branch-pre-release
-      when: always
+      when: on_success
     - <<: *merge-request
-      when: always
+      when: on_success
 
 .shipmate:rules:build:
   rules:
@@ -55,18 +55,18 @@ variables:
 .shipmate:rules:ship:
   rules:
     - <<: *branch-master
-      when: always
+      when: on_success
     - <<: *branch-alpha
-      when: always
+      when: on_success
     - <<: *branch-maintenance
-      when: always
+      when: on_success
     - <<: *branch-pre-release
-      when: always
+      when: on_success
 
 .shipmate:rules:mr:
   rules:
     - <<: *merge-request
-      when: always
+      when: on_success
 
 .shipmate:rules:docker:build:
   rules:
