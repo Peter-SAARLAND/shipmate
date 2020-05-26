@@ -3,9 +3,16 @@
   connection: local
   gather_facts: true
   tasks:
+    - name: Evaluating Cargo Version
+      set_fact:
+        shipmate_cargo_version: "{{ lookup('file', shipmate_cargo_dir+'/'+shipmate_version_file, errors='ignore') }}"
+      failed_when: false
+      ignore_errors: True
+      no_log: True
+      
     - name: Discovering providers
       include: "provider-discovery.yml"
-      
+
     - name: Loading Default .releaserc
       template:
         src: templates/.releaserc.yml.j2

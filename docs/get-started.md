@@ -7,6 +7,7 @@
 **shipmate** is a tool to automate chores around software releases. By enabling **Shipmate** for your repository, you gain the following features without further ado:
 
 - automated semantic versioning and releases with [semantic-release](https://github.com/semantic-release/semantic-release)
+- automated changelog based on your [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - automated Docker builds and releases (GitLab Container Registry)
 - tightly integrated with GitLab (GitLab Registry, Merge Requests, ...)
 
@@ -31,6 +32,8 @@ Include the following code in your repository's `.gitlab-ci-yml`:
 include:
   - remote: "https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/shipmate.gitlab-ci.yml"
 ```
+
+> You can still use your own stages, jobs and CI config. Please review **Shipmate's** [CI Config](https://gitlab.com/peter.saarland/scratch/-/raw/master/ci/templates/shipmate.gitlab-ci.yml) and [GitLab Pipeline Config](https://docs.gitlab.com/ee/ci/yaml/) for advanced usage.
 
 ### 2. Populate GitLab Personal Access Token
 
