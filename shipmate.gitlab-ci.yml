@@ -17,7 +17,6 @@ variables:
   SHIPMATE_VERSION: "1.12.2"
 
 .branch-master: &branch-master
-  if: '$CI_PROJECT_NAMESPACE !~ /^gitlab(-org)?($|\/)/'
   if: '$CI_BUILD_REF_NAME == "master"'
 
 .branch-alpha: &branch-alpha
@@ -40,7 +39,9 @@ variables:
     - <<: *branch-master
       when: on_success
     - <<: *branch-alpha
-      when: always
+      when: on_success
+    - <<: *branch-beta
+      when: on_success
     - <<: *branch-maintenance
       when: on_success
     - <<: *branch-pre-release
@@ -50,13 +51,15 @@ variables:
 
 .shipmate:rules:build:
   rules:
-    - when: always
+    - when: on_success
 
 .shipmate:rules:ship:
   rules:
     - <<: *branch-master
       when: on_success
     - <<: *branch-alpha
+      when: on_success
+    - <<: *branch-beta
       when: on_success
     - <<: *branch-maintenance
       when: on_success
@@ -86,6 +89,11 @@ variables:
       - VERSION.txt
       when: always
     - <<: *branch-alpha
+      exists:
+      - Dockerfile
+      - VERSION.txt
+      when: always
+    - <<: *branch-beta
       exists:
       - Dockerfile
       - VERSION.txt

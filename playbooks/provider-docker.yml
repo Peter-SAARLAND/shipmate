@@ -67,7 +67,7 @@
         msg: "{{ shipmate_tag_docker.stdout.split('\n') }}"
         verbosity: 1
       when: >
-      shipmate_tag_docker.stdout_lines|length > 0
+        shipmate_tag_docker.stdout_lines|length > 0
 
     - name: Ship
       command: docker push {{ lookup('vars','docker_image_registry_path', default='')+docker_image_repository+'/'+docker_image_branch+':'+item }}
