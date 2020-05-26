@@ -38,15 +38,15 @@ variables:
 .shipmate:rules:tag:
   rules:
     - <<: *branch-master
-      when: always
+      when: on_success
     - <<: *branch-alpha
       when: always
     - <<: *branch-maintenance
-      when: always
+      when: on_success
     - <<: *branch-pre-release
-      when: always
+      when: on_success
     - <<: *merge-request
-      when: always
+      when: on_success
 
 .shipmate:rules:build:
   rules:
@@ -55,18 +55,18 @@ variables:
 .shipmate:rules:ship:
   rules:
     - <<: *branch-master
-      when: always
+      when: on_success
     - <<: *branch-alpha
-      when: always
+      when: on_success
     - <<: *branch-maintenance
-      when: always
+      when: on_success
     - <<: *branch-pre-release
-      when: always
+      when: on_success
 
 .shipmate:rules:mr:
   rules:
     - <<: *merge-request
-      when: always
+      when: on_success
 
 .shipmate:rules:docker:build:
   rules:
