@@ -20,7 +20,7 @@ shipmate_version_file: "{{ lookup('env','SHIPMATE_VERSION_FILE') | default('VERS
 shipmate_shipfile: "{{ lookup('env','SHIPMATE_SHIPFILE') | default('shipmate.env', true) }}"
 
 shipmate_commit_id: "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 'git rev-parse HEAD'), true) }}"
-shipmate_commit_message:  "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('pipe', 'git log -1 --pretty=%B'), true) }}"
+shipmate_commit_message:  "{{ lookup('env', 'CI_COMMIT_DESCRIPTION') | default(lookup('pipe', 'git log -1 --pretty=%B'), true) }}"
 shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default(lookup('pipe', 'git rev-parse --abbrev-ref HEAD'), true) }}"
 shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default(shipmate_default_branch, true) }}"
 shipmate_ci_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
