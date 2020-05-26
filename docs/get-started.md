@@ -21,7 +21,7 @@ It was designed to automate the software release process in a systemized and gen
 
 ## Use it
 
-**It's simple!** 
+**It's simple!**
 
 ### 1. Enable Shipmate for GitLab CI
 

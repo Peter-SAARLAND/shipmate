@@ -13,7 +13,7 @@
 - **Shipmate** DOESN'T run on **Feature Branches**
 - **Shipmate** works in 3 stages that seemlessly map to **GitLab CI Stages**:
   - `tag`: in this stage, **Shipmate** generates the version for the current project. If running for a **Merge Request**, the version will be generated out of **Commit SHA** and **Branch Name** (e.g. `v28sh7hd820-fix/bug-id`). If running for a **Release Branch**, the version will be computed from the project's [Releases](https://docs.gitlab.com/ee/user/project/releases/)
-  - `build`: in this stage, **Shipmate** builds artifacts (e.g. Docker Images) for the current project. It auto-discovers many [Shipping Providers](shipping-providers.md) to build for out of the box. 
+  - `build`: in this stage, **Shipmate** builds artifacts (e.g. Docker Images) for the current project. It auto-discovers many [Shipping Providers](shipping-providers.md) to build for out of the box.
   - `ship`: in this stage, **Shipmate** ships your artifacts (e.g. Docker Images) to the relevant platforms (e.g. **GitLab Container Registry**, **Ansible Galaxy**, **Debian Repositories**, and more).
 
 The **Shipmate Development Workflow** looks like this:

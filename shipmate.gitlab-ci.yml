@@ -1,0 +1,149 @@
+stages:
+  - tag
+  - build
+  - test
+  - ship
+  - deploy
+
+cache:
+  key: "$CI_JOB_NAME"
+  
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_BUILDKIT: 1
+  DOCKER_HOST: tcp://docker:2375
+  IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  SHIPMATE_CARGO_DIR: $CI_BUILDS_DIR/$CI_PROJECT_PATH
+  SHIPMATE_VERSION: "1.11.2"
+
+.branch-master: &branch-master
+  if: '$CI_PROJECT_NAMESPACE !~ /^gitlab(-org)?($|\/)/'
+  if: '$CI_BUILD_REF_NAME == "master"'
+
+.branch-alpha: &branch-alpha
+  if: '$CI_BUILD_REF_NAME == "alpha"'
+
+.branch-beta: &branch-beta
+  if: '$CI_BUILD_REF_NAME == "beta"'
+
+.branch-maintenance: &branch-maintenance
+  if: '$CI_BUILD_REF_NAME =~ /^(([0-9]+)\.)?([0-9]+)\.x/'
+
+.branch-pre-release: &branch-pre-release
+  if: '$CI_BUILD_REF_NAME =~ /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/'
+
+.merge-request: &merge-request
+  if: $CI_MERGE_REQUEST_IID
+
+.shipmate:rules:tag:
+  rules:
+    - <<: *branch-master
+      when: always
+    - <<: *branch-alpha
+      when: always
+    - <<: *branch-maintenance
+      when: always
+    - <<: *branch-pre-release
+      when: always
+    - <<: *merge-request
+      when: always
+
+.shipmate:rules:build:
+  rules:
+    - when: always
+
+.shipmate:rules:ship:
+  rules:
+    - <<: *branch-master
+      when: always
+    - <<: *branch-alpha
+      when: always
+    - <<: *branch-maintenance
+      when: always
+    - <<: *branch-pre-release
+      when: always
+
+.shipmate:rules:mr:
+  rules:
+    - <<: *merge-request
+      when: always
+
+.shipmate:rules:docker:build:
+  rules:
+    - exists:
+        - Dockerfile
+        - VERSION.txt
+
+.shipmate:rules:docker:release:
+  rules:
+    - exists:
+        - Dockerfile
+        - VERSION.txt
+      when: always
+    - <<: *branch-master
+      exists:
+      - Dockerfile
+      - VERSION.txt
+      when: always
+    - <<: *branch-alpha
+      exists:
+      - Dockerfile
+      - VERSION.txt
+      when: always
+    - <<: *branch-maintenance
+      exists:
+      - Dockerfile
+      - VERSION.txt
+      when: always
+    - <<: *branch-pre-release
+      exists:
+      - Dockerfile
+      - VERSION.txt
+      when: always
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /-wip$/
+      when: never
+    - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+tag:
+  stage: tag
+  image: "registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION"
+  script:
+    - cd /shipmate
+    - make stuff
+  extends:
+    - .shipmate:rules:tag
+  artifacts:
+    paths:
+    - VERSION.txt
+
+build:
+  stage: build
+  image: registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION
+  extends:
+    - .shipmate:rules:tag
+  services:
+    - docker:19.03.8-dind
+  script:
+    - cd /shipmate
+    - make stuff
+  
+
+ship:
+  stage: ship
+  image: registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION
+  extends:
+    - .shipmate:rules:ship
+  services:
+    - docker:19.03.8-dind
+  script:
+    - cd /shipmate
+    - make stuff
+  artifacts:
+    paths:
+    - CHANGELOG.md

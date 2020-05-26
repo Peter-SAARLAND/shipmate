@@ -8,7 +8,6 @@ Out of the box, **Shipmate** can discover a range of providers your software can
 - Docker
 - NuGet (TBA)
 - Pip (TBA)
-- 
 
 ## Docker
 

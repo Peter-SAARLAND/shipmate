@@ -25,6 +25,6 @@ This software is developed on GitLab and mirrored to GitHub.
 - [GitHub](https://github.com/Peter-SAARLAND/)
 - [Matrix](https://matrix.to/#/!RcYHgbzWjyNTYeEIZj:hello.peter.saarland?via=hello.peter.saarland)
 
-# Documentation
+## Documentation
 
 - [Get Started](docs/get-started.md)
