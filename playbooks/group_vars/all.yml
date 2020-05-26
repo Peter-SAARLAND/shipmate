@@ -24,6 +24,8 @@ shipmate_commit_message:  "{{ lookup('env', 'CI_COMMIT_SHA') | default(lookup('p
 shipmate_default_branch: "{{ lookup('env', 'CI_DEFAULT_BRANCH') | default(lookup('pipe', 'git rev-parse --abbrev-ref HEAD'), true) }}"
 shipmate_branch: "{{ lookup('env', 'CI_COMMIT_REF_NAME') | default(shipmate_default_branch, true) }}"
 shipmate_ci_stage: "{{ lookup('env', 'CI_JOB_STAGE') | default('tag', true) }}"
+shipmate_ci_job_token: "{{ lookup('env', 'CI_JOB_TOKEN') | default('UNKNOWN', true) }}"
+shipmate_ci_job_user: "{{ lookup('env', 'CI_JOB_USER') | default('gitlab-ci-token', true) }}"
 shipmate_stage: "{{ lookup('env', 'SHIPMATE_STAGE') | default(shipmate_ci_stage, true) }}"
 shipmate_merge_request: "{{ lookup('env', 'CI_MERGE_REQUEST_IID') }}"
 shipmate_ci: "{{ lookup('env', 'CI')|bool | default(False, true) }}"
@@ -48,6 +50,8 @@ docker_image_repository: "{{ lookup('env', 'CI_PROJECT_PATH') | default(shipmate
 # docker_image_repository: registry.gitlab.com
 # registry.gitlab.com/peter.saarland/shipmate
 docker_image_registry: "{{ lookup('env','CI_REGISTRY') | default('', true) }}"
+docker_image_registry_user: "{{ shipmate_ci_job_user }}"
+docker_image_registry_password: "{{ shipmate_ci_job_token }}"
 docker_image_registry_path: "{{ docker_image_registry+'/' if docker_image_registry else '' }}"
 
 # docker_image: $docker_image_registry/$docker_image_repository[/$docker_image_branch]:$docker_image_version

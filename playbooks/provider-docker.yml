@@ -1,3 +1,12 @@
+- name: Authenticate
+  block:
+    - name: Login to Registry
+      command: echo {{ docker_image_registry_password }} | docker login {{ docker_image_registry }} --username={{ docker_image_registry_user }} --password-stdin
+          chdir="{{ shipmate_cargo_dir }}" 
+  when: >
+    shipmate_ci and
+    docker_image_registry_path != ''
+
 - name: Build
   block:
     - name: Reporting
