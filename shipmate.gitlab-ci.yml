@@ -14,7 +14,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   SHIPMATE_CARGO_DIR: $CI_BUILDS_DIR/$CI_PROJECT_PATH
-  SHIPMATE_VERSION: "1.12.2"
+  SHIPMATE_VERSION: "1.12.7"
 
 .branch-master: &branch-master
   if: '$CI_BUILD_REF_NAME == "master"'
@@ -82,32 +82,32 @@ variables:
     - exists:
         - Dockerfile
         - VERSION.txt
-      when: always
+      when: on_success
     - <<: *branch-master
       exists:
       - Dockerfile
       - VERSION.txt
-      when: always
+      when: on_success
     - <<: *branch-alpha
       exists:
       - Dockerfile
       - VERSION.txt
-      when: always
+      when: on_success
     - <<: *branch-beta
       exists:
       - Dockerfile
       - VERSION.txt
-      when: always
+      when: on_success
     - <<: *branch-maintenance
       exists:
       - Dockerfile
       - VERSION.txt
-      when: always
+      when: on_success
     - <<: *branch-pre-release
       exists:
       - Dockerfile
       - VERSION.txt
-      when: always
+      when: on_success
 
 workflow:
   rules:
