@@ -9,7 +9,7 @@
       failed_when: false
       ignore_errors: True
       no_log: True
-      
+
     - name: Discovering providers
       include: "provider-discovery.yml"
 
@@ -51,7 +51,7 @@
           - "Shipmate Commit ID: {{ shipmate_commit_id }}"
           - "Shimate Commit Message: {{ shipmate_commit_message }}"
           - "Shipmate Docker Image: {{ docker_image }}"
-          - "Shipmate Providers: {{ shipmate_providers_string }}"
+          - "Shipmate Providers: {{ shipmate_providers }}"
           - "Shipmate Merge Request ID: {{ lookup('env', 'CI_MERGE_REQUEST_ID') | default('UNKNOWN', true) }}"
           - "Shipmate Merge Request IID: {{ lookup('env', 'CI_MERGE_REQUEST_IID') | default('UNKNOWN', true) }}"
           - "Shipmate Cargo Version: {{ shipmate_cargo_version | default('UKNOWN') }}"

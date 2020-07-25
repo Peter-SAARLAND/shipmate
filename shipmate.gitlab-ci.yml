@@ -136,7 +136,7 @@ build:
   extends:
     - .shipmate:rules:tag
   services:
-    - docker:19.03.8-dind
+    - docker:19.03.12-dind
   script:
     - cd /shipmate
     - make stuff
@@ -148,7 +148,7 @@ ship:
   extends:
     - .shipmate:rules:ship
   services:
-    - docker:19.03.8-dind
+    - docker:19.03.12-dind
   script:
     - cd /shipmate
     - make stuff
