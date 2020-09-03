@@ -16,7 +16,7 @@ export DOCKER_BUILDKIT=1
 IF0_ENVIRONMENT ?= zero
 DOCKER_BASE_IMAGE ?= registry.gitlab.com/peter.saarland/ansible-boilerplate:latest
 export DOCKER_IMAGE ?= shipmate
-DOCKER_SHELLFLAGS ?= run --privileged --rm -it .ssh -v ${PWD}:/shipmate -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/cargo ${DOCKER_IMAGE}
+DOCKER_SHELLFLAGS ?= run --privileged --rm -it -v ${PWD}:/shipmate -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/cargo ${DOCKER_IMAGE}
 export GL_TOKEN ?= 
 ANSIBLE_V ?= 
 
