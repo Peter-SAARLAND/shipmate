@@ -24,7 +24,9 @@ ENV ANSIBLE_STRATEGY=linear
 
 RUN mkdir -p /shipmate $SHIPMATE_CARGO_DIR /root/.ssh
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN  apt-get update  \
+  && apt-get install -y --no-install-recommends software-properties-common \
+  && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
   && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
   && apt-get update \
@@ -37,6 +39,8 @@ COPY . .
 
 RUN echo 'export PS1="[\$IF0_ENVIRONMENT] \W # "' >> /root/.bashrc \
     && echo "$THIS_VERSION" > /shipmate/VERSION.txt
+
+WORKDIR /cargo
 
 ENTRYPOINT ["/shipmate/docker-entrypoint.sh"]
 
