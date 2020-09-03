@@ -19,7 +19,7 @@
       ignore_errors: True
     
     - name: "Build {{ shipmate_cargo_version }}"
-      command: docker build -t {{ docker_image }} --build-arg SHIPMATE_BUILD_DATE={{ ansible_date_time.iso8601 }} --build-arg SHIPMATE_AUTHOR={{ shipmate_author }}--build-arg SHIPMATE_AUTHOR_URL={{ shipmate_author_url }} --build-arg SHIPMATE_COMMIT_ID={{ shipmate_commit_id }} --build-arg DOCKER_IMAGE={{ docker_image }} --build-arg SHIPMATE_CARGO_VERSION={{ shipmate_cargo_version }} --build-arg DOCKER_BASE_IMAGE={{ docker_base_image }} .
+      command: docker build -t {{ docker_image }} --build-arg SHIPMATE_BUILD_DATE={{ ansible_date_time.iso8601 }} --build-arg SHIPMATE_AUTHOR={{ shipmate_author }} --build-arg SHIPMATE_AUTHOR_URL={{ shipmate_author_url }} --build-arg SHIPMATE_COMMIT_ID={{ shipmate_commit_id }} --build-arg DOCKER_IMAGE={{ docker_image }} --build-arg SHIPMATE_CARGO_VERSION={{ shipmate_cargo_version }} --build-arg DOCKER_BASE_IMAGE={{ docker_base_image }} .
         chdir="{{ shipmate_cargo_dir }}"
       register: shipmate_build_docker
 
