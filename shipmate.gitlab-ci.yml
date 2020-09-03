@@ -11,7 +11,6 @@ cache:
 variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_BUILDKIT: 1
-  DOCKER_HOST: tcp://docker:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   SHIPMATE_CARGO_DIR: $CI_BUILDS_DIR/$CI_PROJECT_PATH
   SHIPMATE_VERSION: "1.12.7"
@@ -135,8 +134,10 @@ build:
   image: registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION
   extends:
     - .shipmate:rules:tag
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   services:
-    - docker:19.03.8-dind
+    - docker:19.03.12-dind
   script:
     - cd /shipmate
     - make stuff
@@ -148,7 +149,7 @@ ship:
   extends:
     - .shipmate:rules:ship
   services:
-    - docker:19.03.8-dind
+    - docker:19.03.12-dind
   script:
     - cd /shipmate
     - make stuff
