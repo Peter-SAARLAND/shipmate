@@ -11,7 +11,7 @@
 - automated Docker builds and releases (GitLab Container Registry)
 - tightly integrated with GitLab (GitLab Registry, Merge Requests, ...)
 
-**Shipmate** aims to be a friendly replacement for **GitLab Auto DevOps** which - in our opinion - is focused too tighlty on Kubernetes and not yet suitable for more generalistic use-cases.
+**Shipmate** aims to be a friendly replacement for **GitLab Auto DevOps** which - in our opinion - is focused too tightly on Kubernetes and not yet suitable for more generalistic use-cases.
 
 It was designed to automate the software release process in a systemized and generalistic approach. **Shipmate** helps to **tag**, **build** and **ship** your software to:
 
