@@ -119,7 +119,7 @@ workflow:
 
 tag:
   stage: tag
-  image: "registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION"
+  image: "registry.gitlab.com/p3r.one/shipmate:v$SHIPMATE_VERSION"
   script:
     - cd /shipmate
     - make stuff
@@ -131,7 +131,7 @@ tag:
 
 build:
   stage: build
-  image: registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION
+  image: registry.gitlab.com/p3r.one/shipmate:v$SHIPMATE_VERSION
   extends:
     - .shipmate:rules:tag
   variables:
@@ -145,7 +145,7 @@ build:
 
 ship:
   stage: ship
-  image: registry.gitlab.com/peter.saarland/shipmate:v$SHIPMATE_VERSION
+  image: registry.gitlab.com/p3r.one/shipmate:v$SHIPMATE_VERSION
   extends:
     - .shipmate:rules:ship
   services:
